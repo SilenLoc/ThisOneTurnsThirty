@@ -1,6 +1,7 @@
 
 set dotenv-load
 
+
 alias r := run
 
 bt := '0'
@@ -10,13 +11,15 @@ log := "warn"
 export JUST_LOG := log
 export ROCKET_PORT := "3721"
 
+@_list:
+	just --list --unsorted
+
 frontend *args:
     cd frontend/tbtt && just {{args}}
 
 hurl_opts := "--variables-file hurl.env.test --test"
 
-@_list:
-	just --list --unsorted
+
 
 # Perform all verifications (compile, test, lint, etc.)
 verify: test shutdown run-release api-test lint
@@ -60,5 +63,4 @@ shutdown:
     lsof -t -i:{{ROCKET_PORT}} | xargs -r kill
 
 run-release: shutdown
-	just frontend build
     just run &
