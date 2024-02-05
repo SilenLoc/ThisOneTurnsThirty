@@ -32,18 +32,11 @@ fn all_options() {
     /* Intentionally left empty */
 }
 
-#[get("/")]
-async fn index() -> NamedFile {
-  let page_directory_path = 
-  format!("{}/../frontend/tbtt/dist", env!("CARGO_MANIFEST_DIR"));
-  NamedFile::open(Path::new(&page_directory_path).join("index.html")).await.unwrap()
-}
 
 #[shuttle_runtime::main]
 async fn rocket() -> shuttle_rocket::ShuttleRocket {
     let rocket = rocket::build()
         .mount("/api", routes![healthz])
-        .mount("/", routes![index])
         .attach(CORS);
 
     Ok(rocket.into())
