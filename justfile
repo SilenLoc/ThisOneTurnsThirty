@@ -55,6 +55,9 @@ install-dev-tools:
 	cargo install cargo-hack cargo-watch cargo-deny hurl
 
 
+deploy:
+	cargo-shuttle deploy
+
 fmt:
   cargo fmt
 

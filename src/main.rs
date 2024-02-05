@@ -17,10 +17,8 @@ extern crate rocket;
 #[macro_use]
 extern crate rstest;
 
-use std::path::Path;
 
 use rocket::fairing::{Fairing, Info, Kind};
-use rocket::fs::NamedFile;
 use rocket::http::Header;
 use rocket::{routes, Request, Response};
 
