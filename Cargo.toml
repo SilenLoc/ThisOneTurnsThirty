@@ -1,5 +1,5 @@
 [package]
-name = "hurlalot"
+name = "tbtt"
 version = "0.1.0"
 edition = "2021"
 rust-version = "1.72.0"
@@ -8,8 +8,8 @@ rust-version = "1.72.0"
 
 [dependencies]
 rocket = { version = "=0.5.0", features = ["json", "http2", "uuid"] }
-shuttle-rocket = "0.38"
-shuttle-runtime = "0.38"
+shuttle-rocket = "0.38.0"
+shuttle-runtime = "0.38.0"
 tokio = "1.36.0"
 
 serde = { version = "1.0", features = ["derive"] }

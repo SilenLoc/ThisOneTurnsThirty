@@ -746,20 +746,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "df3b46402a9d5adb4c86a0cf463f42e19994e3ee891101b1841f30a545cb49a9"
 
 [[package]]
-name = "hurlalot"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "rocket",
- "rstest",
- "serde",
- "serde_json",
- "shuttle-rocket",
- "shuttle-runtime",
- "tokio",
-]
-
-[[package]]
 name = "hyper"
 version = "0.14.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2258,6 +2244,20 @@ checksum = "a75fb188eb626b924683e3b95e3a48e63551fcfb51949de2f06a9d91dbee93c9"
 dependencies = [
  "core-foundation-sys",
  "libc",
+]
+
+[[package]]
+name = "tbtt"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "rocket",
+ "rstest",
+ "serde",
+ "serde_json",
+ "shuttle-rocket",
+ "shuttle-runtime",
+ "tokio",
 ]
 
 [[package]]
