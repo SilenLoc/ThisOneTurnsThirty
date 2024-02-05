@@ -19,34 +19,50 @@ frontend *args:
 
 hurl_opts := "--variables-file hurl.env.test --test"
 
-
-
 # Perform all verifications (compile, test, lint, etc.)
-verify: test shutdown run-release api-test lint
+@verify: test run-release api-test lint
+	just shutdown
+	echo --- all good ---
+
+commit message:
+	git add .
+	git commit -m {{message}}
+	git push
 
 # Run the service locally (from sources)
-run:
+@run:
 	cargo-shuttle run --port 3721
 
-
 # Run the tests
-test:
+@test:
 	cargo hack test --feature-powerset --locked
+	echo ---test ok---
+	echo
 	cargo deny check licenses
+	echo ---licenses ok---
+	echo
 
 # Run the static code analysis
-lint:
+@lint:
 	cargo fmt --all -- --check
+	echo ---format ok---
+	echo
 	cargo hack clippy --feature-powerset --all-targets --workspace --locked
+	echo ---clippy okay---
+	echo
 	cargo deny check
+	echo ---deny okay---
+	echo
 
-wait-for-api:
-	hurl api/health.hurl --retry 60 {{hurl_opts}}
+@wait-for-api:
+	hurl api_tests/healthz.hurl --retry 60 {{hurl_opts}}
 
 
 # run acceptance tests against the running test stack
-api-test *args: wait-for-api
-    hurl api/*.hurl {{hurl_opts}} {{args}}
+@api-test *args: wait-for-api
+    hurl api_tests/*.hurl {{hurl_opts}} {{args}}
+    echo ---api ok---
+    echo
 
 # Install cargo dev-tools used by the `verify` recipe (requires rustup to be already installed)
 install-dev-tools:
@@ -62,8 +78,8 @@ fmt:
   cargo fmt
 
 
-shutdown:
+@shutdown:
     lsof -t -i:{{ROCKET_PORT}} | xargs -r kill
 
-run-release: shutdown
+@run-release: shutdown
     just run &

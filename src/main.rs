@@ -17,7 +17,6 @@ extern crate rocket;
 #[macro_use]
 extern crate rstest;
 
-
 use rocket::fairing::{Fairing, Info, Kind};
 use rocket::http::Header;
 use rocket::{routes, Request, Response};
@@ -30,11 +29,11 @@ fn all_options() {
     /* Intentionally left empty */
 }
 
-
 #[shuttle_runtime::main]
 async fn rocket() -> shuttle_rocket::ShuttleRocket {
     let rocket = rocket::build()
         .mount("/api", routes![healthz])
+        .mount("/", routes![all_options])
         .attach(CORS);
 
     Ok(rocket.into())
@@ -48,12 +47,17 @@ mod tests {
 
     #[fixture]
     fn client() -> Client {
-        Client::tracked(rocket::build().mount("/", routes![healthz])).unwrap()
+        Client::tracked(
+            rocket::build()
+                .mount("/api", routes![healthz])
+                .mount("/", routes![all_options]),
+        )
+        .unwrap()
     }
 
     #[rstest]
     fn healthz_returns_ok(client: Client) {
-        assert_eq!(Status::Ok, client.get("/healthz").dispatch().status());
+        assert_eq!(Status::Ok, client.get("/api/healthz").dispatch().status());
     }
 }
 
