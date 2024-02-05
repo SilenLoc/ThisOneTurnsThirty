@@ -1,0 +1,27 @@
+
+install:
+    bun install
+    bun install --frozen-lockfile
+
+verify: install test lint
+    bun run build
+
+test:
+    bun run test
+
+run: install
+    bun run dev
+
+lint:
+    bun run lint
+    bun run format-check
+
+fmt:
+    bun run format 
+
+build:
+    bun run build
+
+dev:
+    bun install --save-dev jest typescript ts-jest @types/jest
+    bun install prettier
