@@ -17,9 +17,17 @@ extern crate rocket;
 #[macro_use]
 extern crate rstest;
 
+mod auth;
+mod sql;
+mod api;
+
+use std::env;
+
+use auth::AdminAccessToken;
 use rocket::fairing::{Fairing, Info, Kind};
 use rocket::http::Header;
 use rocket::{routes, Request, Response};
+use sql::init;
 
 #[get("/healthz")]
 fn healthz() {}
@@ -31,9 +39,13 @@ fn all_options() {
 
 #[shuttle_runtime::main]
 async fn rocket() -> shuttle_rocket::ShuttleRocket {
+    let db = sql::init().await.expect("DB is needed to start");
+    let admin_access_token = env::var("ADMIN_ACCESS_TOKEN").expect("needs to have a admin token");
     let rocket = rocket::build()
         .mount("/api", routes![healthz])
         .mount("/", routes![all_options])
+        .manage(db)
+        .manage(AdminAccessToken{code: admin_access_token})
         .attach(CORS);
 
     Ok(rocket.into())

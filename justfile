@@ -10,6 +10,9 @@ log := "warn"
 
 export JUST_LOG := log
 export ROCKET_PORT := "3721"
+# export LIBSQL_URL="libsql://eminent-asgardian-silenloc.turso.io"
+
+
 
 @_list:
 	just --list --unsorted

@@ -1,0 +1,4 @@
+
+
+#[get("/health")]
+fn health() {}
